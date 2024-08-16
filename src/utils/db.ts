@@ -15,6 +15,7 @@ const connect = async () => {
     logger.info('Database connected');
 }
 
-connect();
-
-export default prisma;
+export {
+    prisma,
+    connect
+};
