@@ -66,6 +66,18 @@ export const updateCategory = async (req: Request, res: Response) => {
         const { id } = req.params;
         const { name, image, description, tax_applicable, tax, tax_type } = req.body;
 
+        const existingCategory = await prisma.category.findFirst({
+            where: {
+                id
+            }
+        })
+
+        if (!existingCategory) {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                message: 'Category does not exist'
+            });
+        }
+
         const data: CategoryData = {
             name,
             image,
