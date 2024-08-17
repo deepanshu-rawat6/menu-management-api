@@ -48,7 +48,7 @@ export default (router: express.Router) => {
      *   get:
      *     tags:
      *       - API
-     *     summary: Hello World Response
+     *     summary: Hello, from server!
      *     description: Responds with a simple "Hello World!" message.
      *     responses:
      *       200:
