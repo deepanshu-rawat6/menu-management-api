@@ -9,10 +9,31 @@ export default (router: express.Router) => {
      *   get:
      *     tags:
      *       - API
-     *     description: Responds if the app is up and running
+     *     summary: Health Check
+     *     description: Responds with a simple message indicating if the app is up and running.
      *     responses:
      *       200:
      *         description: App is up and running
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 message:
+     *                   type: string
+     *                   description: The health check response message
+     *                   example: "Healthcheck OK!"
+     *       500:
+     *         description: Internal server error
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 error:
+     *                   type: string
+     *                   description: The error message
+     *                   example: "Internal server error"
      */
     router.get('/api/v1/healthcheck', (req: Request, res: Response) => {
         logger.info('GET /api/v1/healthcheck');
@@ -27,10 +48,31 @@ export default (router: express.Router) => {
      *   get:
      *     tags:
      *       - API
-     *     description: Responds with a hello world message
+     *     summary: Hello World Response
+     *     description: Responds with a simple "Hello World!" message.
      *     responses:
      *       200:
-     *         description: Hello World!
+     *         description: Successfully returns a hello world message
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 message:
+     *                   type: string
+     *                   description: The hello world message
+     *                   example: "Hello World!"
+     *       500:
+     *         description: Internal server error
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 error:
+     *                   type: string
+     *                   description: The error message
+     *                   example: "Internal server error"
      */
     router.get('/api/v1/hello', (req: Request, res: Response) => {
         logger.info('GET /api/v1/hello');
