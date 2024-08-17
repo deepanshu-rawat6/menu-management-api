@@ -23,19 +23,23 @@ export default (router: express.Router) => {
      *             properties:
      *               name:
      *                 type: string
+     *                 required: true
      *                 description: The name of the category
      *                 example: "Electronics"
      *               image:
      *                 type: string
+     *                 required: true
      *                 format: url
      *                 description: The image URL of the category
      *                 example: "https://example.com/image.jpg"
      *               description:
      *                 type: string
+     *                 required: true
      *                 description: The description of the category
      *                 example: "Category for all electronic items"
      *               tax_applicable:
      *                 type: boolean
+     *                 required: true
      *                 description: The tax applicable status of the category
      *                 example: true
      *               tax:
@@ -48,7 +52,7 @@ export default (router: express.Router) => {
      *                 example: "GST"
      *     responses:
      *       200:
-     *         description: Category data fetched successfully
+     *         description: Category created successfully
      *         content:
  *           application/json:
  *             schema:
@@ -133,7 +137,7 @@ export default (router: express.Router) => {
 
     /**
      * @openapi
-     * '/api/v1/categories/{id}':
+     * '/api/v1/categories':
      *   get:
      *     tags:
      *       - Category
@@ -225,10 +229,10 @@ export default (router: express.Router) => {
      *                   description: The error message
      *                   example: "Internal server error"
      */
-    router.get('/api/v1/categories/:id', getCategoryByIdORName, (req: Request, res: Response) => {
-        logger.info('GET /api/v1/categories/:id');
+    router.get('/api/v1/categories', getCategoryByIdORName, (req: Request, res: Response) => {
+        logger.info('GET /api/v1/categories');
         res.status(StatusCodes.OK).send({
-            message: "GET /api/v1/categories/:id"
+            message: "GET /api/v1/categories"
         });
     });
 
