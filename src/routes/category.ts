@@ -23,23 +23,19 @@ export default (router: express.Router) => {
      *             properties:
      *               name:
      *                 type: string
-     *                 required: true
      *                 description: The name of the category
      *                 example: "Electronics"
      *               image:
      *                 type: string
-     *                 required: true
      *                 format: url
      *                 description: The image URL of the category
      *                 example: "https://example.com/image.jpg"
      *               description:
      *                 type: string
-     *                 required: true
      *                 description: The description of the category
      *                 example: "Category for all electronic items"
      *               tax_applicable:
      *                 type: boolean
-     *                 required: true
      *                 description: The tax applicable status of the category
      *                 example: true
      *               tax:
@@ -48,52 +44,52 @@ export default (router: express.Router) => {
      *                 example: 18
      *               tax_type:
      *                 type: string
-     *                 description: The tax type of the category
+     *                 description: The type of tax applicable
      *                 example: "GST"
      *     responses:
      *       200:
      *         description: Category created successfully
      *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: The success message
- *                   example: "Category created successfully"
- *                 data:
- *                   type: object
- *                   properties:
- *                     id:
- *                       type: string
- *                       description: The unique identifier of the category
- *                       example: "12345"
- *                     name:
- *                       type: string
- *                       description: The name of the category
- *                       example: "Electronics"
- *                     image:
- *                       type: string
- *                       format: url
- *                       description: The image URL of the category
- *                       example: "https://example.com/image.jpg"
- *                     description:
- *                       type: string
- *                       description: The description of the category
- *                       example: "Category for all electronic items"
- *                     tax_applicable:
- *                       type: boolean
- *                       description: Whether the category is subject to tax
- *                       example: true
- *                     tax:
- *                       type: number
- *                       description: The tax percentage applicable to the category
- *                       example: 18
- *                     tax_type:
- *                       type: string
- *                       description: The type of tax applicable
- *                       example: "GST"
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 message:
+     *                   type: string
+     *                   description: The success message
+     *                   example: "Category created successfully"
+     *                 data:
+     *                   type: object
+     *                   properties:
+     *                     id:
+     *                       type: string
+     *                       description: The unique identifier of the category
+     *                       example: "12345"
+     *                     name:
+     *                       type: string
+     *                       description: The name of the category
+     *                       example: "Electronics"
+     *                     image:
+     *                       type: string
+     *                       format: url
+     *                       description: The image URL of the category
+     *                       example: "https://example.com/image.jpg"
+     *                     description:
+     *                       type: string
+     *                       description: The description of the category
+     *                       example: "Category for all electronic items"
+     *                     tax_applicable:
+     *                       type: boolean
+     *                       description: Whether the category is subject to tax
+     *                       example: true
+     *                     tax:
+     *                       type: number
+     *                       description: The tax percentage applicable to the category
+     *                       example: 18
+     *                     tax_type:
+     *                       type: string
+     *                       description: The type of tax applicable
+     *                       example: "GST"
      *       400:
      *         description: Bad request, some details are missing or invalid
      *         content:
@@ -144,7 +140,7 @@ export default (router: express.Router) => {
      *     summary: Retrieve a category by ID or name
      *     description: This endpoint allows you to fetch a single category by either its ID or name.
      *     parameters:
-     *       - in: path
+     *       - in: query
      *         name: id
      *         required: true
      *         schema:
@@ -285,6 +281,15 @@ export default (router: express.Router) => {
      *                     example: "GST"
      *       500:
      *         description: Internal server error
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 error:
+     *                   type: string
+     *                   description: The error message
+     *                   example: "Internal server error"
      */
     router.get('/api/v1/categories/all', getAllCategories, (req: Request, res: Response) => {
         logger.info('GET /api/v1/catgories/all');
@@ -296,7 +301,7 @@ export default (router: express.Router) => {
 
     /**
      * @openapi
-     * '/api/v1/categories/:id':
+     * '/api/v1/categories/{id}':
      *   patch:
      *     tags:
      *       - Category
@@ -318,19 +323,23 @@ export default (router: express.Router) => {
      *             properties:
      *               name:
      *                 type: string
+     *                 required: true
      *                 description: The name of the category
      *                 example: "Electronics"
      *               image:
      *                 type: string
      *                 format: url
+     *                 required: true
      *                 description: The image URL of the category
      *                 example: "https://example.com/image.jpg"
      *               description:
      *                 type: string
+     *                 required: true
      *                 description: The description of the category
      *                 example: "Category for all electronic items"
      *               tax_applicable:
      *                 type: boolean
+     *                 required: true
      *                 description: The tax applicable status of the category
      *                 example: true
      *               tax:
@@ -343,13 +352,70 @@ export default (router: express.Router) => {
      *                 example: "GST"
      *     responses:
      *       200:
-     *         description: Updated the category successfully
+     *         description: Category updated successfully
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 message:
+     *                   type: string
+     *                   description: The success message
+     *                   example: "Category updated successfully"
+     *                 data:
+     *                   type: object
+     *                   properties:
+     *                     id:
+     *                       type: string
+     *                       description: The unique identifier of the category
+     *                       example: "12345"
+     *                     name:
+     *                       type: string
+     *                       description: The name of the category
+     *                       example: "Electronics"
+     *                     image:
+     *                       type: string
+     *                       format: url
+     *                       description: The image URL of the category
+     *                       example: "https://example.com/image.jpg"
+     *                     description:
+     *                       type: string
+     *                       description: The description of the category
+     *                       example: "Category for all electronic items"
+     *                     tax_applicable:
+     *                       type: boolean
+     *                       description: Whether the category is subject to tax
+     *                       example: true
+     *                     tax:
+     *                       type: number
+     *                       description: The tax percentage applicable to the category
+     *                       example: 18
+     *                     tax_type:
+     *                       type: string
+     *                       description: The type of tax applicable
+     *                       example: "GST"
      *       400:
-     *         description: Bad request, invalid data or missing id
-     *       404:
-     *         description: Category not found
+     *         description: Bad request, some details are missing or invalid
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 error:
+     *                   type: string
+     *                   description: The error message
+     *                   example: "name is missing"
      *       500:
      *         description: Internal server error
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 error:
+     *                   type: string
+     *                   description: The error message
+     *                   example: "Internal server error"
      */
     router.patch('/api/v1/categories/:id', validateData(updateCategorySchema), updateCategory, (req: Request, res: Response) => {
         logger.info('PATCH /api/v1/categories/:id');
