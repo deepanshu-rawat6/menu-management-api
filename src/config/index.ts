@@ -1,28 +1,5 @@
 import 'dotenv/config';
 
 export default {
-    HOST: process.env.HOST,
     PORT: process.env.PORT || 3001,
-    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
-    JWT_SECRET: process.env.JWT_SECRET,
-    SERVER_ROOT_URI: process.env.SERVER_ROOT_URI,
-    SESSION_SECRET: process.env.SESSION_SECRET,
-    REDIRECT_URI: process.env.REDIRECT_URI,
-    UI_ORIGIN: process.env.UI_ORIGIN,
-    PRIVATE_KEY: process.env.PRIVATE_KEY,
-    PUBLIC_KEY: process.env.PUBLIC_KEY,
-    COOKIE_NAME: process.env.COOKIE_NAME,
-    SALT_ROUNDS: process.env.SALT_ROUNDS,
-    COOKIE_EXPIRATION: process.env.COOKIE_EXPIRATION,
-    MAILER_USER: process.env.MAIL_USER,
-    MAILER_PASSWORD: process.env.MAIL_USER_PASS,
-    DB_URI: process.env.DATABASE_URL,
-    QUEUE_PORT: process.env.QUEUE_PORT,
-    QUEUE_HOST: process.env.QUEUE_HOST,
-    QUEUE_ADMIN: process.env.QUEUE_ADMIN,
-    QUEUE_PASS: process.env.QUEUE_PASS,
-    REDIS_PORT: process.env.REDIS_PORT,
-    REDIS_HOST: process.env.REDIS_HOST,
-    REDIS_PASSWORD: process.env.REDIS_PASS,
 }
