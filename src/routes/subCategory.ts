@@ -506,10 +506,10 @@ export default (router: express.Router) => {
      *                   description: The error message
      *                   example: "Internal server error"
      */
-    router.patch('/api/v1/categories/:id', validateData(updateSubCategorySchema), updateSubCategory, (req: Request, res: Response) => {
-        logger.info('PATCH /api/v1/categories/:id');
+    router.patch('/api/v1/categories/:category_id/:id', validateData(updateSubCategorySchema), updateSubCategory, (req: Request, res: Response) => {
+        logger.info('PATCH /api/v1/categories/:category_id/:id');
         res.status(StatusCodes.OK).send({
-            message: "PATCH /api/v1/categories/:id"
+            message: "PATCH /api/v1/categories/:category_id/:id"
         });
     });
 

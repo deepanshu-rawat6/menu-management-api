@@ -92,7 +92,7 @@ export const updateSubCategory = async (req: Request, res: Response) => {
             data.tax = tax;
         }
 
-        const updatedSubCategory = await prisma.category.update({
+        const updatedSubCategory = await prisma.sub_Category.update({
             where: {
                 id: id
             },
@@ -123,16 +123,11 @@ export const getAllSubCategories = async (req: Request, res: Response) => {
     try {
         const subCategories = await prisma.sub_Category.findMany();
 
-        if (subCategories) {
-            res.status(StatusCodes.OK).json({
-                message: 'Fetched all sub-categories successfully',
-                data: subCategories
-            })
-        } else {
-            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-                message: 'Error in fetching sub-categories'
-            });
-        }
+        res.status(StatusCodes.OK).json({
+            message: 'Fetched all sub-categories successfully',
+            data: subCategories
+        })
+
     } catch (err) {
         logger.info(`Error in fetching categories: ${err}`);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -151,7 +146,7 @@ export const getSubCategoryByIdORName = async (req: Request, res: Response) => {
             });
         }
 
-        const subCategory = await prisma.category.findFirst({
+        const subCategory = await prisma.sub_Category.findFirst({
             where: {
                 OR: [
                     { id: String(id) },
