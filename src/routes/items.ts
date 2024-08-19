@@ -3,7 +3,7 @@ import logger from '../utils/logger';
 import { StatusCodes } from 'http-status-codes';
 import { validateData } from '../middlewares';
 import { createItemSchema, updateItemSchema } from '../schemas';
-import { createItemUnderCategory, createItemUnderSubCategory, updateItemUnderCategory, updateItemUnderSubCategory, getAllItems, getItemByIdORName, getItemsUnderCategory, getItemsUnderSubCategory } from 'controllers';
+import { createItemUnderCategory, createItemUnderSubCategory, updateItemUnderCategory, updateItemUnderSubCategory, getAllItems, getItemByIdORName, getItemsUnderCategory, getItemsUnderSubCategory, searchItemsByName } from '../controllers';
 
 
 export default (router: express.Router) => {
@@ -1020,6 +1020,113 @@ export default (router: express.Router) => {
         logger.info('PATCH /api/v1/sub_categories/:sub_category_id/items/:id');
         res.status(StatusCodes.OK).send({
             message: "PATCH /api/v1/sub_categories/:sub_category_id/items/:id"
+        });
+    });
+
+    /**
+     * @openapi
+     * '/api/v1/items/search':
+     *   get:
+     *     tags:
+     *       - Search Item(s)
+     *     summary: Search item/items by name
+     *     description: This endpoint searches for items based on the provided name or partial name.
+     *     parameters:
+     *       - in: query
+     *         name: name
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: The name or partial name of the item to search for
+     *     responses:
+     *       200:
+     *         description: Items matching the search criteria successfully fetched
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 message:
+     *                   type: string
+     *                   description: Success message
+     *                   example: "Items fetched successfully"
+     *                 data:
+     *                   type: array
+     *                   items:
+     *                     type: object
+     *                     properties:
+     *                       id:
+     *                         type: string
+     *                         description: The unique identifier of the item
+     *                         example: "12345"
+     *                       name:
+     *                         type: string
+     *                         description: The name of the item
+     *                         example: "Smartphone"
+     *                       image:
+     *                         type: string
+     *                         format: url
+     *                         description: The image URL of the item
+     *                         example: "https://example.com/smartphone.jpg"
+     *                       category_id:
+     *                         type: string
+     *                         description: The ID of the category to which the item belongs
+     *                         example: "12345"
+     *                       sub_category_id:
+     *                         type: string
+     *                         description: The ID of the sub-category to which the item belongs
+     *                         example: "54321"
+     *                       description:
+     *                         type: string
+     *                         description: The description of the item
+     *                         example: "Latest model smartphone with advanced features"
+     *                       tax_applicable:
+     *                         type: boolean
+     *                         description: Whether the item is subject to tax
+     *                         example: true
+     *                       tax:
+     *                         type: number
+     *                         description: The tax percentage applicable to the item
+     *                         example: 18
+     *                       base_amount:
+     *                         type: number
+     *                         description: The base price of the item before any discounts
+     *                         example: 500.00
+     *                       discount:
+     *                         type: number
+     *                         description: The discount amount applied to the item
+     *                         example: 50.00
+     *                       total_amount:
+     *                         type: number
+     *                         description: The final price of the item after applying the discount
+     *                         example: 450.00
+     *       400:
+     *         description: Bad request, search term is missing or invalid
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 message:
+     *                   type: string
+     *                   description: The error message
+     *                   example: "Please provide a name to search"
+     *       500:
+     *         description: Internal server error
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 message:
+     *                   type: string
+     *                   description: The error message
+     *                   example: "Error in fetching items: [error details]"
+     */
+    router.get('/api/v1/items/search', searchItemsByName, (req: Request, res: Response) => {
+        logger.info('GET /api/v1/items/search');
+        res.status(StatusCodes.OK).send({
+            message: "GET /api/v1/items/search"
         });
     });
 }
