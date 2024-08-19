@@ -3,13 +3,26 @@ import logger from '../utils/logger';
 import { StatusCodes } from 'http-status-codes';
 import { prisma } from '../utils/db';
 
-interface ItemData {
+interface ItemDataCategory {
+    name: string;
+    image: string;
+    description: string;
+    tax_applicable: boolean;
+    category_id: string;
+    sub_category_id?: string;
+    tax?: number;
+    base_amt: number;
+    discount: number;
+    total_amt?: number;
+}
+
+interface ItemDataSubCategory {
     name: string;
     image: string;
     description: string;
     tax_applicable: boolean;
     category_id?: string;
-    sub_category_id?: string;
+    sub_category_id: string;
     tax?: number;
     base_amt: number;
     discount: number;
@@ -34,7 +47,7 @@ export const createItemUnderCategory = async (req: Request, res: Response) => {
             });
         }
 
-        const data: ItemData = {
+        const data: ItemDataCategory = {
             name,
             image,
             description,
@@ -77,7 +90,7 @@ export const createItemUnderCategory = async (req: Request, res: Response) => {
 
 export const createItemUnderSubCategory = async (req: Request, res: Response) => {
     try {
-        const { name, image, description, tax_applicable, tax, base_amt, discount, total_amt } = req.body;
+        const { name, image, description, tax_applicable, tax, base_amt, discount } = req.body;
 
         const { sub_category_id } = req.params;
 
@@ -93,7 +106,7 @@ export const createItemUnderSubCategory = async (req: Request, res: Response) =>
             });
         }
 
-        const data: ItemData = {
+        const data: ItemDataSubCategory = {
             name,
             image,
             description,
@@ -151,7 +164,7 @@ export const updateItemUnderCategory = async (req: Request, res: Response) => {
             });
         }
 
-        const data: ItemData = {
+        const data: ItemDataCategory = {
             name,
             image,
             description,
@@ -214,7 +227,7 @@ export const updateItemUnderSubCategory = async (req: Request, res: Response) =>
             });
         }
 
-        const data: ItemData = {
+        const data: ItemDataSubCategory = {
             name,
             image,
             description,
@@ -319,7 +332,7 @@ export const getItemsUnderCategory = async (req: Request, res: Response) => {
 
         const items = await prisma.item.findMany({
             where: {
-                categoryId: category_id
+                category_id
             }
         });
 
@@ -341,9 +354,46 @@ export const getItemsUnderSubCategory = async (req: Request, res: Response) => {
 
         const items = await prisma.item.findMany({
             where: {
-                sub_CategoryId: sub_category_id
+                sub_category_id
             }
         });
+
+        res.status(StatusCodes.OK).json({
+            message: 'Items fetched successfully',
+            data: items
+        });
+    } catch (err) {
+        logger.info(`Error in fetching items: ${err}`);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            message: `Error in fetching items: ${err}`
+        });
+    }
+}
+
+export const searchItemsByName = async (req: Request, res: Response) => {
+    try {
+        const { name } = req.query;
+
+        if (!name) {
+            return res.status(StatusCodes.BAD_REQUEST).json({
+                message: 'Please provide a name to search'
+            });
+        }
+
+        const items = await prisma.item.findMany({
+            where: {
+                name: {
+                    contains: String(name),
+                    mode: 'insensitive'
+                }
+            }
+        });
+
+        if (items.length === 0) {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                message: 'No items found'
+            })
+        }
 
         res.status(StatusCodes.OK).json({
             message: 'Items fetched successfully',
