@@ -1,5 +1,6 @@
 import { createCategory, getAllCategories, getCategoryByIdORName, updateCategory } from "./category";
 import { createSubCategory, updateSubCategory, getAllSubCategories, getSubCategoriesByCategory, getSubCategoryByIdORName } from "./subCategory";
+import { createItemUnderCategory, createItemUnderSubCategory, updateItemUnderCategory, updateItemUnderSubCategory, getAllItems, getItemByIdORName, getItemsUnderCategory, getItemsUnderSubCategory } from "./items";
 
 export {
     createCategory,
@@ -10,5 +11,13 @@ export {
     updateSubCategory,
     getAllSubCategories,
     getSubCategoriesByCategory,
-    getSubCategoryByIdORName
+    getSubCategoryByIdORName,
+    createItemUnderCategory,
+    createItemUnderSubCategory,
+    updateItemUnderCategory,
+    updateItemUnderSubCategory,
+    getAllItems,
+    getItemByIdORName,
+    getItemsUnderCategory,
+    getItemsUnderSubCategory
 }
