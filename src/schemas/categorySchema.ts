@@ -10,10 +10,11 @@ export const createCategorySchema = z.object({
 }).refine(data => {
     if (data.tax_applicable) {
         return data.tax !== undefined && data.tax_type !== undefined;
+    } else {
+        return data.tax === undefined && data.tax_type === undefined;
     }
-    return true;
 }, {
-    message: 'Tax and tax type are required when tax is applicable',
+    message: 'Tax and tax type are required when tax is applicable, and vice versa',
     path: ['tax', 'tax_type']
 })
 
@@ -27,9 +28,10 @@ export const updateCategorySchema = z.object({
 }).refine(data => {
     if (data.tax_applicable) {
         return data.tax !== undefined && data.tax_type !== undefined;
+    } else {
+        return data.tax === undefined && data.tax_type === undefined;
     }
-    return true;
 }, {
-    message: 'Tax and tax type are required when tax is applicable',
+    message: 'Tax and tax type are required when tax is applicable, and vice versa',
     path: ['tax', 'tax_type']
 });
