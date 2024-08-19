@@ -9,19 +9,19 @@ import { createItemUnderCategory, createItemUnderSubCategory, updateItemUnderCat
 export default (router: express.Router) => {
     /**
      * @openapi
-     * '/api/v1/categories/{category_id}/sub-categories':
+     * '/api/v1/categories/{category_id}/items':
      *   post:
      *     tags:
-     *       - Sub-Category
-     *     summary: Create a new sub-category
-     *     description: Create a sub-category with the given details under a specific category
+     *       - Item
+     *     summary: Create a new item under a specific category
+     *     description: Create a new item with the given details under a specific category
      *     parameters:
      *       - in: path
      *         name: category_id
      *         required: true
      *         schema:
      *           type: string
-     *         description: The ID of the category to which the sub-category belongs
+     *         description: The ID of the category to which the item belongs
      *     requestBody:
      *       required: true
      *       content:
@@ -31,28 +31,40 @@ export default (router: express.Router) => {
      *             properties:
      *               name:
      *                 type: string
-     *                 description: The name of the sub-category
-     *                 example: "Mobile Phones"
+     *                 description: The name of the item
+     *                 example: "Smartphone"
      *               image:
      *                 type: string
      *                 format: url
-     *                 description: The image URL of the sub-category
-     *                 example: "https://example.com/mobile.jpg"
+     *                 description: The image URL of the item
+     *                 example: "https://example.com/smartphone.jpg"
      *               description:
      *                 type: string
-     *                 description: The description of the sub-category
-     *                 example: "Sub-category for mobile phones"
+     *                 description: The description of the item
+     *                 example: "Latest model smartphone with advanced features"
      *               tax_applicable:
      *                 type: boolean
-     *                 description: Whether the sub-category is subject to tax
+     *                 description: Whether the item is subject to tax
      *                 example: true
      *               tax:
      *                 type: number
-     *                 description: The tax percentage of the sub-category
+     *                 description: The tax percentage of the item, applicable if tax is applicable
      *                 example: 18
+     *               base_amount:
+     *                 type: number
+     *                 description: The base amount of the item before any discounts
+     *                 example: 50000
+     *               discount:
+     *                 type: number
+     *                 description: The discount amount applicable to the item
+     *                 example: 5000
+     *               total_amount:
+     *                 type: number
+     *                 description: The total amount after discount is applied (Base - Discount)
+     *                 example: 45000
      *     responses:
      *       200:
-     *         description: Sub-Category created successfully
+     *         description: Item created successfully
      *         content:
      *           application/json:
      *             schema:
@@ -61,35 +73,51 @@ export default (router: express.Router) => {
      *                 message:
      *                   type: string
      *                   description: The success message
-     *                   example: "Sub-Category created successfully"
+     *                   example: "Item created successfully"
      *                 data:
      *                   type: object
      *                   properties:
      *                     id:
      *                       type: string
-     *                       description: The unique identifier of the sub-category
+     *                       description: The unique identifier of the item
+     *                       example: "12345"
+     *                     category_id:
+     *                       type: string
+     *                       description: The ID of the category to which the item belongs
      *                       example: "67890"
      *                     name:
      *                       type: string
-     *                       description: The name of the sub-category
-     *                       example: "Mobile Phones"
+     *                       description: The name of the item
+     *                       example: "Smartphone"
      *                     image:
      *                       type: string
      *                       format: url
-     *                       description: The image URL of the sub-category
-     *                       example: "https://example.com/mobile.jpg"
+     *                       description: The image URL of the item
+     *                       example: "https://example.com/smartphone.jpg"
      *                     description:
      *                       type: string
-     *                       description: The description of the sub-category
-     *                       example: "Sub-category for mobile phones"
+     *                       description: The description of the item
+     *                       example: "Latest model smartphone with advanced features"
      *                     tax_applicable:
      *                       type: boolean
-     *                       description: Whether the sub-category is subject to tax
+     *                       description: Whether the item is subject to tax
      *                       example: true
      *                     tax:
      *                       type: number
-     *                       description: The tax percentage applicable to the sub-category
+     *                       description: The tax percentage applicable to the item
      *                       example: 18
+     *                     base_amount:
+     *                       type: number
+     *                       description: The base amount of the item
+     *                       example: 50000
+     *                     discount:
+     *                       type: number
+     *                       description: The discount amount applicable to the item
+     *                       example: 5000
+     *                     total_amount:
+     *                       type: number
+     *                       description: The total amount after discount is applied
+     *                       example: 45000
      *       400:
      *         description: Bad request, some details are missing or invalid
      *         content:
@@ -102,7 +130,7 @@ export default (router: express.Router) => {
      *                   description: The error message
      *                   example: "name is missing"
      *       409:
-     *         description: Conflict, failed to create sub-category, sub-category already exists
+     *         description: Conflict, failed to create item, item already exists
      *         content:
      *           application/json:
      *             schema:
@@ -111,7 +139,7 @@ export default (router: express.Router) => {
      *                 error:
      *                   type: string
      *                   description: The error message
-     *                   example: "Sub-Category already exists"
+     *                   example: "Item already exists"
      *       500:
      *         description: Internal server error
      *         content:
@@ -133,19 +161,19 @@ export default (router: express.Router) => {
 
     /**
      * @openapi
-     * '/api/v1/categories/{category_id}/sub-categories':
+     * '/api/v1/sub-categories/{sub_category_id}/items':
      *   post:
      *     tags:
-     *       - Sub-Category
-     *     summary: Create a new sub-category
-     *     description: Create a sub-category with the given details under a specific category
+     *       - Item
+     *     summary: Create a new item under a specific sub-category
+     *     description: Create an item with the given details under a specific sub-category
      *     parameters:
      *       - in: path
-     *         name: category_id
+     *         name: sub_category_id
      *         required: true
      *         schema:
      *           type: string
-     *         description: The ID of the category to which the sub-category belongs
+     *         description: The ID of the sub-category to which the item belongs
      *     requestBody:
      *       required: true
      *       content:
@@ -155,28 +183,40 @@ export default (router: express.Router) => {
      *             properties:
      *               name:
      *                 type: string
-     *                 description: The name of the sub-category
-     *                 example: "Mobile Phones"
+     *                 description: The name of the item
+     *                 example: "Smartphone"
      *               image:
      *                 type: string
      *                 format: url
-     *                 description: The image URL of the sub-category
-     *                 example: "https://example.com/mobile.jpg"
+     *                 description: The image URL of the item
+     *                 example: "https://example.com/smartphone.jpg"
      *               description:
      *                 type: string
-     *                 description: The description of the sub-category
-     *                 example: "Sub-category for mobile phones"
+     *                 description: The description of the item
+     *                 example: "Latest model smartphone with advanced features"
      *               tax_applicable:
      *                 type: boolean
-     *                 description: Whether the sub-category is subject to tax
+     *                 description: Whether the item is subject to tax
      *                 example: true
      *               tax:
      *                 type: number
-     *                 description: The tax percentage of the sub-category
+     *                 description: The tax percentage of the item, applicable if tax is applicable
      *                 example: 18
+     *               base_amount:
+     *                 type: number
+     *                 description: The base amount of the item before any discounts
+     *                 example: 50000
+     *               discount:
+     *                 type: number
+     *                 description: The discount amount applicable to the item
+     *                 example: 5000
+     *               total_amount:
+     *                 type: number
+     *                 description: The total amount after discount is applied (Base - Discount)
+     *                 example: 45000
      *     responses:
      *       200:
-     *         description: Sub-Category created successfully
+     *         description: Item created successfully
      *         content:
      *           application/json:
      *             schema:
@@ -185,35 +225,51 @@ export default (router: express.Router) => {
      *                 message:
      *                   type: string
      *                   description: The success message
-     *                   example: "Sub-Category created successfully"
+     *                   example: "Item created successfully"
      *                 data:
      *                   type: object
      *                   properties:
      *                     id:
      *                       type: string
-     *                       description: The unique identifier of the sub-category
+     *                       description: The unique identifier of the item
+     *                       example: "12345"
+     *                     sub_category_id:
+     *                       type: string
+     *                       description: The ID of the sub-category to which the item belongs
      *                       example: "67890"
      *                     name:
      *                       type: string
-     *                       description: The name of the sub-category
-     *                       example: "Mobile Phones"
+     *                       description: The name of the item
+     *                       example: "Smartphone"
      *                     image:
      *                       type: string
      *                       format: url
-     *                       description: The image URL of the sub-category
-     *                       example: "https://example.com/mobile.jpg"
+     *                       description: The image URL of the item
+     *                       example: "https://example.com/smartphone.jpg"
      *                     description:
      *                       type: string
-     *                       description: The description of the sub-category
-     *                       example: "Sub-category for mobile phones"
+     *                       description: The description of the item
+     *                       example: "Latest model smartphone with advanced features"
      *                     tax_applicable:
      *                       type: boolean
-     *                       description: Whether the sub-category is subject to tax
+     *                       description: Whether the item is subject to tax
      *                       example: true
      *                     tax:
      *                       type: number
-     *                       description: The tax percentage applicable to the sub-category
+     *                       description: The tax percentage applicable to the item
      *                       example: 18
+     *                     base_amount:
+     *                       type: number
+     *                       description: The base amount of the item
+     *                       example: 50000
+     *                     discount:
+     *                       type: number
+     *                       description: The discount amount applicable to the item
+     *                       example: 5000
+     *                     total_amount:
+     *                       type: number
+     *                       description: The total amount after discount is applied
+     *                       example: 45000
      *       400:
      *         description: Bad request, some details are missing or invalid
      *         content:
@@ -226,7 +282,7 @@ export default (router: express.Router) => {
      *                   description: The error message
      *                   example: "name is missing"
      *       409:
-     *         description: Conflict, failed to create sub-category, sub-category already exists
+     *         description: Conflict, failed to create item, item already exists
      *         content:
      *           application/json:
      *             schema:
@@ -235,7 +291,7 @@ export default (router: express.Router) => {
      *                 error:
      *                   type: string
      *                   description: The error message
-     *                   example: "Sub-Category already exists"
+     *                   example: "Item already exists"
      *       500:
      *         description: Internal server error
      *         content:
@@ -257,30 +313,30 @@ export default (router: express.Router) => {
 
     /**
      * @openapi
-     * '/api/v1/sub-categories':
+     * '/api/v1/items':
      *   get:
      *     tags:
-     *       - Sub-Category
-     *     summary: Retrieve a sub-category by ID or name
-     *     description: This endpoint allows you to fetch a single sub-category by either its ID or name.
+     *       - Item
+     *     summary: Retrieve an item by ID or name
+     *     description: This endpoint allows you to fetch a single item by either its ID or name.
      *     parameters:
      *       - in: query
      *         name: id
-     *         required: true
+     *         required: false
      *         schema:
      *           type: string
-     *         description: The ID of the sub-category to retrieve
+     *         description: The ID of the item to retrieve
      *         example: "12345"
      *       - in: query
      *         name: name
      *         required: false
      *         schema:
      *           type: string
-     *         description: The name of the sub-category to retrieve
-     *         example: "Electronics"
+     *         description: The name of the item to retrieve
+     *         example: "Smartphone"
      *     responses:
      *       200:
-     *         description: Sub-Category data fetched successfully
+     *         description: Item data fetched successfully
      *         content:
      *           application/json:
      *             schema:
@@ -288,33 +344,45 @@ export default (router: express.Router) => {
      *               properties:
      *                 id:
      *                   type: string
-     *                   description: The unique identifier of the category
+     *                   description: The unique identifier of the item
      *                   example: "12345"
      *                 name:
      *                   type: string
-     *                   description: The name of the category
-     *                   example: "Electronics"
+     *                   description: The name of the item
+     *                   example: "Smartphone"
      *                 image:
      *                   type: string
      *                   format: url
-     *                   description: The image URL of the category
-     *                   example: "https://example.com/image.jpg"
-     *                 category_id:
+     *                   description: The image URL of the item
+     *                   example: "https://example.com/smartphone.jpg"
+     *                 sub_category_id:
      *                   type: string
-     *                   description: The ID of the category to which the sub-category belongs
-     *                   example: "12345"
+     *                   description: The ID of the sub-category to which the item belongs
+     *                   example: "67890"
      *                 description:
      *                   type: string
-     *                   description: The description of the category
-     *                   example: "Category for all electronic items"
+     *                   description: The description of the item
+     *                   example: "Latest model smartphone with advanced features"
      *                 tax_applicable:
      *                   type: boolean
-     *                   description: Whether the category is subject to tax
+     *                   description: Whether the item is subject to tax
      *                   example: true
      *                 tax:
      *                   type: number
-     *                   description: The tax percentage applicable to the category
+     *                   description: The tax percentage applicable to the item
      *                   example: 18
+     *                 base_amount:
+     *                   type: number
+     *                   description: The base amount of the item before any discounts
+     *                   example: 50000
+     *                 discount:
+     *                   type: number
+     *                   description: The discount amount applicable to the item
+     *                   example: 5000
+     *                 total_amount:
+     *                   type: number
+     *                   description: The total amount after discount is applied (Base - Discount)
+     *                   example: 45000
      *       400:
      *         description: Bad request, id or name not provided
      *         content:
@@ -327,7 +395,7 @@ export default (router: express.Router) => {
      *                   description: The error message
      *                   example: "Please provide either an ID or a name"
      *       404:
-     *         description: Sub-Category not found
+     *         description: Item not found
      *         content:
      *           application/json:
      *             schema:
@@ -336,7 +404,7 @@ export default (router: express.Router) => {
      *                 error:
      *                   type: string
      *                   description: The error message
-     *                   example: "Category not found"
+     *                   example: "Item not found"
      *       500:
      *         description: Internal server error
      *         content:
@@ -358,15 +426,15 @@ export default (router: express.Router) => {
 
     /**
      * @openapi
-     * '/api/v1/sub-categories/all':
+     * '/api/v1/items/all':
      *   get:
      *     tags:
-     *       - Sub-Category
-     *     summary: Retrieve all sub-categories
-     *     description: This endpoint fetches all sub-categories available in the system.
+     *       - Item
+     *     summary: Retrieve all items
+     *     description: This endpoint fetches all items available in the system.
      *     responses:
      *       200:
-     *         description: Fetched all sub-categories successfully
+     *         description: Fetched all items successfully
      *         content:
      *           application/json:
      *             schema:
@@ -376,33 +444,45 @@ export default (router: express.Router) => {
      *                 properties:
      *                   id:
      *                     type: string
-     *                     description: The unique identifier of the category
+     *                     description: The unique identifier of the item
      *                     example: "12345"
      *                   name:
      *                     type: string
-     *                     description: The name of the category
-     *                     example: "Electronics"
+     *                     description: The name of the item
+     *                     example: "Smartphone"
      *                   image:
      *                     type: string
      *                     format: url
-     *                     description: The image URL of the category
-     *                     example: "https://example.com/image.jpg"
-     *                   category_id:
+     *                     description: The image URL of the item
+     *                     example: "https://example.com/smartphone.jpg"
+     *                   sub_category_id:
      *                     type: string
-     *                     description: The ID of the category to which the sub-category belongs
-     *                     example: "12345"
+     *                     description: The ID of the sub-category to which the item belongs
+     *                     example: "67890"
      *                   description:
      *                     type: string
-     *                     description: The description of the category
-     *                     example: "Category for all electronic items"
+     *                     description: The description of the item
+     *                     example: "Latest model smartphone with advanced features"
      *                   tax_applicable:
      *                     type: boolean
-     *                     description: Whether the category is subject to tax
+     *                     description: Whether the item is subject to tax
      *                     example: true
      *                   tax:
      *                     type: number
-     *                     description: The tax percentage applicable to the category
+     *                     description: The tax percentage applicable to the item
      *                     example: 18
+     *                   base_amount:
+     *                     type: number
+     *                     description: The base amount of the item before any discounts
+     *                     example: 50000
+     *                   discount:
+     *                     type: number
+     *                     description: The discount amount applicable to the item
+     *                     example: 5000
+     *                   total_amount:
+     *                     type: number
+     *                     description: The total amount after discount is applied (Base - Discount)
+     *                     example: 45000
      *       500:
      *         description: Internal server error
      *         content:
@@ -424,22 +504,23 @@ export default (router: express.Router) => {
 
     /**
      * @openapi
-     * '/api/v1/categories/{category_id}/sub-categories':
+     * '/api/v1/categories/{category_id}/items':
      *   get:
      *     tags:
-     *       - Sub-Category
-     *     summary: Retrieve all sub-categories by category
-     *     description: This endpoint fetches all sub-categories belonging to a specific category.
+     *       - Item
+     *     summary: Retrieve all items by category
+     *     description: This endpoint fetches all items belonging to a specific category.
      *     parameters:
      *       - in: path
      *         name: category_id
      *         required: true
      *         schema:
      *           type: string
-     *         description: The ID of the sub-category to which the sub-category belongs
+     *         description: The ID of the category to which the items belong
+     *         example: "12345"
      *     responses:
      *       200:
-     *         description: Fetched all sub-categories successfully
+     *         description: Fetched all items successfully
      *         content:
      *           application/json:
      *             schema:
@@ -449,33 +530,45 @@ export default (router: express.Router) => {
      *                 properties:
      *                   id:
      *                     type: string
-     *                     description: The unique identifier of the category
-     *                     example: "12345"
+     *                     description: The unique identifier of the item
+     *                     example: "67890"
      *                   name:
      *                     type: string
-     *                     description: The name of the category
-     *                     example: "Electronics"
+     *                     description: The name of the item
+     *                     example: "Smartphone"
      *                   image:
      *                     type: string
      *                     format: url
-     *                     description: The image URL of the category
-     *                     example: "https://example.com/image.jpg"
+     *                     description: The image URL of the item
+     *                     example: "https://example.com/smartphone.jpg"
      *                   category_id:
      *                     type: string
-     *                     description: The ID of the category to which the sub-category belongs
+     *                     description: The ID of the category to which the item belongs
      *                     example: "12345"
      *                   description:
      *                     type: string
-     *                     description: The description of the category
-     *                     example: "Category for all electronic items"
+     *                     description: The description of the item
+     *                     example: "Latest model smartphone with advanced features"
      *                   tax_applicable:
      *                     type: boolean
-     *                     description: Whether the category is subject to tax
+     *                     description: Whether the item is subject to tax
      *                     example: true
      *                   tax:
      *                     type: number
-     *                     description: The tax percentage applicable to the category
+     *                     description: The tax percentage applicable to the item
      *                     example: 18
+     *                   base_amount:
+     *                     type: number
+     *                     description: The base price of the item before any discounts
+     *                     example: 500.00
+     *                   discount:
+     *                     type: number
+     *                     description: The discount amount applied to the item
+     *                     example: 50.00
+     *                   total_amount:
+     *                     type: number
+     *                     description: The final price of the item after applying the discount
+     *                     example: 450.00
      *       500:
      *         description: Internal server error
      *         content:
@@ -497,22 +590,23 @@ export default (router: express.Router) => {
 
     /**
      * @openapi
-     * '/api/v1/categories/{category_id}/sub-categories':
+     * '/api/v1/sub-categories/{sub_category_id}/items':
      *   get:
      *     tags:
-     *       - Sub-Category
-     *     summary: Retrieve all sub-categories by category
-     *     description: This endpoint fetches all sub-categories belonging to a specific category.
+     *       - Item
+     *     summary: Retrieve all items by sub-category
+     *     description: This endpoint fetches all items belonging to a specific sub-category.
      *     parameters:
      *       - in: path
-     *         name: category_id
+     *         name: sub_category_id
      *         required: true
      *         schema:
      *           type: string
-     *         description: The ID of the sub-category to which the sub-category belongs
+     *         description: The ID of the sub-category to which the items belong
+     *         example: "67890"
      *     responses:
      *       200:
-     *         description: Fetched all sub-categories successfully
+     *         description: Fetched all items successfully
      *         content:
      *           application/json:
      *             schema:
@@ -522,33 +616,45 @@ export default (router: express.Router) => {
      *                 properties:
      *                   id:
      *                     type: string
-     *                     description: The unique identifier of the category
-     *                     example: "12345"
+     *                     description: The unique identifier of the item
+     *                     example: "54321"
      *                   name:
      *                     type: string
-     *                     description: The name of the category
-     *                     example: "Electronics"
+     *                     description: The name of the item
+     *                     example: "Smartphone"
      *                   image:
      *                     type: string
      *                     format: url
-     *                     description: The image URL of the category
-     *                     example: "https://example.com/image.jpg"
-     *                   category_id:
+     *                     description: The image URL of the item
+     *                     example: "https://example.com/smartphone.jpg"
+     *                   sub_category_id:
      *                     type: string
-     *                     description: The ID of the category to which the sub-category belongs
-     *                     example: "12345"
+     *                     description: The ID of the sub-category to which the item belongs
+     *                     example: "67890"
      *                   description:
      *                     type: string
-     *                     description: The description of the category
-     *                     example: "Category for all electronic items"
+     *                     description: The description of the item
+     *                     example: "Latest model smartphone with advanced features"
      *                   tax_applicable:
      *                     type: boolean
-     *                     description: Whether the category is subject to tax
+     *                     description: Whether the item is subject to tax
      *                     example: true
      *                   tax:
      *                     type: number
-     *                     description: The tax percentage applicable to the category
+     *                     description: The tax percentage applicable to the item
      *                     example: 18
+     *                   base_amount:
+     *                     type: number
+     *                     description: The base price of the item before any discounts
+     *                     example: 500.00
+     *                   discount:
+     *                     type: number
+     *                     description: The discount amount applied to the item
+     *                     example: 50.00
+     *                   total_amount:
+     *                     type: number
+     *                     description: The final price of the item after applying the discount
+     *                     example: 450.00
      *       500:
      *         description: Internal server error
      *         content:
@@ -570,25 +676,25 @@ export default (router: express.Router) => {
 
     /**
      * @openapi
-     * '/api/v1/categories/{category_id}/sub-categories/{id}':
+     * '/api/v1/categories/{category_id}/items/{id}':
      *   patch:
      *     tags:
-     *       - Sub-Category
-     *     summary: Update a sub-category by ID
-     *     description: Update a sub-category with the given details by ID
+     *       - Item
+     *     summary: Update an item by ID under a specific category
+     *     description: Update an item with the given details by ID within a specific category.
      *     parameters:
      *       - in: path
      *         name: category_id
      *         required: true
      *         schema:
      *           type: string
-     *         description: The ID of the sub-category to which the sub-category belongs
+     *         description: The ID of the category to which the item belongs
      *       - in: path
      *         name: id
      *         required: true
      *         schema:
      *           type: string
-     *         description: The ID of the sub-category to update
+     *         description: The ID of the item to update
      *     requestBody:
      *       required: true
      *       content:
@@ -599,36 +705,48 @@ export default (router: express.Router) => {
      *               name:
      *                 type: string
      *                 required: true
-     *                 description: The name of the sub-category
-     *                 example: "Electronics"
+     *                 description: The name of the item
+     *                 example: "Smartphone"
      *               image:
      *                 type: string
      *                 format: url
      *                 required: true
-     *                 description: The image URL of the sub-category
-     *                 example: "https://example.com/image.jpg"
+     *                 description: The image URL of the item
+     *                 example: "https://example.com/smartphone.jpg"
      *               category_id:
      *                 type: string
      *                 required: true
-     *                 description: The ID of the sub-category to which the sub-category belongs
+     *                 description: The ID of the category to which the item belongs
      *                 example: "12345"
      *               description:
      *                 type: string
      *                 required: true
-     *                 description: The description of the sub-category
-     *                 example: "Category for all electronic items"
+     *                 description: The description of the item
+     *                 example: "Latest model smartphone with advanced features"
      *               tax_applicable:
      *                 type: boolean
      *                 required: true
-     *                 description: Whether the sub-category is subject to tax
+     *                 description: Whether the item is subject to tax
      *                 example: true
      *               tax:
      *                 type: number
-     *                 description: The tax percentage applicable to the sub-category
+     *                 description: The tax percentage applicable to the item
      *                 example: 18
+     *               base_amount:
+     *                 type: number
+     *                 description: The base price of the item before any discounts
+     *                 example: 500.00
+     *               discount:
+     *                 type: number
+     *                 description: The discount amount applied to the item
+     *                 example: 50.00
+     *               total_amount:
+     *                 type: number
+     *                 description: The final price of the item after applying the discount
+     *                 example: 450.00
      *     responses:
      *       200:
-     *         description: Sub-Category updated successfully
+     *         description: Item updated successfully
      *         content:
      *           application/json:
      *             schema:
@@ -637,39 +755,51 @@ export default (router: express.Router) => {
      *                 message:
      *                   type: string
      *                   description: The success message
-     *                   example: "Sub-Category updated successfully"
+     *                   example: "Item updated successfully"
      *                 data:
      *                   type: object
      *                   properties:
      *                     id:
      *                       type: string
-     *                       description: The unique identifier of the category
-     *                       example: "12345"
+     *                       description: The unique identifier of the item
+     *                       example: "54321"
      *                     name:
      *                       type: string
-     *                       description: The name of the category
-     *                       example: "Electronics"
+     *                       description: The name of the item
+     *                       example: "Smartphone"
      *                     image:
      *                       type: string
      *                       format: url
-     *                       description: The image URL of the category
-     *                       example: "https://example.com/image.jpg"
+     *                       description: The image URL of the item
+     *                       example: "https://example.com/smartphone.jpg"
      *                     category_id:
      *                       type: string
-     *                       description: The ID of the category to which the sub-category belongs
+     *                       description: The ID of the category to which the item belongs
      *                       example: "12345"
      *                     description:
      *                       type: string
-     *                       description: The description of the category
-     *                       example: "Category for all electronic items"
+     *                       description: The description of the item
+     *                       example: "Latest model smartphone with advanced features"
      *                     tax_applicable:
      *                       type: boolean
-     *                       description: Whether the category is subject to tax
+     *                       description: Whether the item is subject to tax
      *                       example: true
      *                     tax:
      *                       type: number
-     *                       description: The tax percentage applicable to the category
+     *                       description: The tax percentage applicable to the item
      *                       example: 18
+     *                     base_amount:
+     *                       type: number
+     *                       description: The base price of the item before any discounts
+     *                       example: 500.00
+     *                     discount:
+     *                       type: number
+     *                       description: The discount amount applied to the item
+     *                       example: 50.00
+     *                     total_amount:
+     *                       type: number
+     *                       description: The final price of the item after applying the discount
+     *                       example: 450.00
      *       400:
      *         description: Bad request, some details are missing or invalid
      *         content:
@@ -682,7 +812,7 @@ export default (router: express.Router) => {
      *                   description: The error message
      *                   example: "Invalid data provided"
      *       404:
-     *         description: Not found, sub-category ID does not exist
+     *         description: Not found, item ID does not exist
      *         content:
      *           application/json:
      *             schema:
@@ -691,7 +821,7 @@ export default (router: express.Router) => {
      *                 error:
      *                   type: string
      *                   description: The error message
-     *                   example: "Sub-Category not found"
+     *                   example: "Item not found"
      *       500:
      *         description: Internal server error
      *         content:
@@ -704,34 +834,40 @@ export default (router: express.Router) => {
      *                   description: The error message
      *                   example: "Internal server error"
      */
-    router.patch('/api/v1/categories/:category_id/:id', validateData(updateItemSchema), updateItemUnderCategory, (req: Request, res: Response) => {
-        logger.info('PATCH /api/v1/categories/:category_id/:id');
+    router.patch('/api/v1/categories/:category_id/items/:id', validateData(updateItemSchema), updateItemUnderCategory, (req: Request, res: Response) => {
+        logger.info('PATCH /api/v1/categories/:category_id/items/:id');
         res.status(StatusCodes.OK).send({
-            message: "PATCH /api/v1/categories/:category_id/:id"
+            message: "PATCH /api/v1/categories/:category_id/items/:id"
         });
     });
 
     /**
      * @openapi
-     * '/api/v1/categories/{category_id}/sub-categories/{id}':
+     * '/api/v1/sub-categories/{sub_category_id}/items/{id}':
      *   patch:
      *     tags:
-     *       - Sub-Category
-     *     summary: Update a sub-category by ID
-     *     description: Update a sub-category with the given details by ID
+     *       - Item
+     *     summary: Update an item by ID under a specific sub-category
+     *     description: Update an item with the given details by ID within a specific sub-category.
      *     parameters:
      *       - in: path
      *         name: category_id
      *         required: true
      *         schema:
      *           type: string
-     *         description: The ID of the sub-category to which the sub-category belongs
+     *         description: The ID of the category to which the sub-category belongs
+     *       - in: path
+     *         name: sub_category_id
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: The ID of the sub-category to which the item belongs
      *       - in: path
      *         name: id
      *         required: true
      *         schema:
      *           type: string
-     *         description: The ID of the sub-category to update
+     *         description: The ID of the item to update
      *     requestBody:
      *       required: true
      *       content:
@@ -742,36 +878,53 @@ export default (router: express.Router) => {
      *               name:
      *                 type: string
      *                 required: true
-     *                 description: The name of the sub-category
-     *                 example: "Electronics"
+     *                 description: The name of the item
+     *                 example: "Smartphone"
      *               image:
      *                 type: string
      *                 format: url
      *                 required: true
-     *                 description: The image URL of the sub-category
-     *                 example: "https://example.com/image.jpg"
+     *                 description: The image URL of the item
+     *                 example: "https://example.com/smartphone.jpg"
      *               category_id:
      *                 type: string
      *                 required: true
-     *                 description: The ID of the sub-category to which the sub-category belongs
+     *                 description: The ID of the category to which the item belongs
      *                 example: "12345"
+     *               sub_category_id:
+     *                 type: string
+     *                 required: true
+     *                 description: The ID of the sub-category to which the item belongs
+     *                 example: "54321"
      *               description:
      *                 type: string
      *                 required: true
-     *                 description: The description of the sub-category
-     *                 example: "Category for all electronic items"
+     *                 description: The description of the item
+     *                 example: "Latest model smartphone with advanced features"
      *               tax_applicable:
      *                 type: boolean
      *                 required: true
-     *                 description: Whether the sub-category is subject to tax
+     *                 description: Whether the item is subject to tax
      *                 example: true
      *               tax:
      *                 type: number
-     *                 description: The tax percentage applicable to the sub-category
+     *                 description: The tax percentage applicable to the item
      *                 example: 18
+     *               base_amount:
+     *                 type: number
+     *                 description: The base price of the item before any discounts
+     *                 example: 500.00
+     *               discount:
+     *                 type: number
+     *                 description: The discount amount applied to the item
+     *                 example: 50.00
+     *               total_amount:
+     *                 type: number
+     *                 description: The final price of the item after applying the discount
+     *                 example: 450.00
      *     responses:
      *       200:
-     *         description: Sub-Category updated successfully
+     *         description: Item updated successfully
      *         content:
      *           application/json:
      *             schema:
@@ -780,39 +933,55 @@ export default (router: express.Router) => {
      *                 message:
      *                   type: string
      *                   description: The success message
-     *                   example: "Sub-Category updated successfully"
+     *                   example: "Item updated successfully"
      *                 data:
      *                   type: object
      *                   properties:
      *                     id:
      *                       type: string
-     *                       description: The unique identifier of the category
+     *                       description: The unique identifier of the item
      *                       example: "12345"
      *                     name:
      *                       type: string
-     *                       description: The name of the category
-     *                       example: "Electronics"
+     *                       description: The name of the item
+     *                       example: "Smartphone"
      *                     image:
      *                       type: string
      *                       format: url
-     *                       description: The image URL of the category
-     *                       example: "https://example.com/image.jpg"
+     *                       description: The image URL of the item
+     *                       example: "https://example.com/smartphone.jpg"
      *                     category_id:
      *                       type: string
-     *                       description: The ID of the category to which the sub-category belongs
+     *                       description: The ID of the category to which the item belongs
      *                       example: "12345"
+     *                     sub_category_id:
+     *                       type: string
+     *                       description: The ID of the sub-category to which the item belongs
+     *                       example: "54321"
      *                     description:
      *                       type: string
-     *                       description: The description of the category
-     *                       example: "Category for all electronic items"
-     *                     tax_applicable:
+     *                       description: The description of the item
+     *                       example: "Latest model smartphone with advanced features"
+     *                     tact_applicable:
      *                       type: boolean
-     *                       description: Whether the category is subject to tax
+     *                       description: Whether the item is subject to tax
      *                       example: true
      *                     tax:
      *                       type: number
-     *                       description: The tax percentage applicable to the category
+     *                       description: The tax percentage applicable to the item
      *                       example: 18
+     *                     base_amount:
+     *                       type: number
+     *                       description: The base price of the item before any discounts
+     *                       example: 500.00
+     *                     discount:
+     *                       type: number
+     *                       description: The discount amount applied to the item
+     *                       example: 50.00
+     *                     total_amount:
+     *                       type: number
+     *                       description: The final price of the item after applying the discount
+     *                       example: 450.00
      *       400:
      *         description: Bad request, some details are missing or invalid
      *         content:
@@ -825,7 +994,7 @@ export default (router: express.Router) => {
      *                   description: The error message
      *                   example: "Invalid data provided"
      *       404:
-     *         description: Not found, sub-category ID does not exist
+     *         description: Not found, item ID does not exist
      *         content:
      *           application/json:
      *             schema:
@@ -834,7 +1003,7 @@ export default (router: express.Router) => {
      *                 error:
      *                   type: string
      *                   description: The error message
-     *                   example: "Sub-Category not found"
+     *                   example: "Item not found"
      *       500:
      *         description: Internal server error
      *         content:
@@ -847,10 +1016,10 @@ export default (router: express.Router) => {
      *                   description: The error message
      *                   example: "Internal server error"
      */
-    router.patch('/api/v1/sub_categories/:sub_category_id/:id', validateData(updateItemSchema), updateItemUnderCategory, (req: Request, res: Response) => {
-        logger.info('PATCH /api/v1/sub_categories/:sub_category_id/:id');
+    router.patch('/api/v1/sub_categories/:sub_category_id/items/:id', validateData(updateItemSchema), updateItemUnderSubCategory, (req: Request, res: Response) => {
+        logger.info('PATCH /api/v1/sub_categories/:sub_category_id/items/:id');
         res.status(StatusCodes.OK).send({
-            message: "PATCH /api/v1/sub_categories/:sub_category_id/:id"
+            message: "PATCH /api/v1/sub_categories/:sub_category_id/items/:id"
         });
     });
 }
