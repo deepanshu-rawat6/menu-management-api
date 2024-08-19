@@ -30,16 +30,29 @@ export const createSubCategory = async (req: Request, res: Response) => {
             });
         }
 
+        const category = await prisma.category.findUnique({
+            where: {
+                id: category_id
+            }
+        })
+
+        const defaultTaxApplicability = category?.tax_applicable;
+        const defaultTax = category?.tax;
+
         const data: SubCategoryData = {
             name,
             image,
             description,
             category_id,
-            tax_applicable,
+            tax_applicable: tax_applicable !== undefined ? tax_applicable : defaultTaxApplicability,
         }
 
         if (tax_applicable) {
-            data.tax = tax;
+            if (tax !== undefined) {
+                data.tax = tax;
+            } else {
+                data.tax = defaultTax;
+            }
         }
 
         const subCategory = await prisma.sub_Category.create({ data })
@@ -68,7 +81,7 @@ export const updateSubCategory = async (req: Request, res: Response) => {
         const { category_id, id } = req.params;
         const { name, image, description, tax_applicable, tax } = req.body;
 
-        const existingSubCategory = await prisma.category.findFirst({
+        const existingSubCategory = await prisma.sub_Category.findFirst({
             where: {
                 id
             }
@@ -80,16 +93,29 @@ export const updateSubCategory = async (req: Request, res: Response) => {
             });
         }
 
+        const category = await prisma.category.findUnique({
+            where: {
+                id: category_id
+            }
+        })
+
+        const defaultTaxApplicability = category?.tax_applicable;
+        const defaultTax = category?.tax;
+
         const data: SubCategoryData = {
             name,
             image,
             description,
             category_id,
-            tax_applicable,
+            tax_applicable: tax_applicable !== undefined ? tax_applicable : defaultTaxApplicability,
         }
 
         if (tax_applicable) {
-            data.tax = tax;
+            if (tax !== undefined) {
+                data.tax = tax;
+            } else {
+                data.tax = defaultTax;
+            }
         }
 
         const updatedSubCategory = await prisma.sub_Category.update({
