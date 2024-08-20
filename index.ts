@@ -1,9 +1,9 @@
-import App from './server';
+import App from './src/server';
 import http from 'http';
-import config from './config';
-import logger from './utils/logger';
-import swaggerDocs from './utils/swagger-docs';
-import { connect } from './utils/db';
+import config from './src/config';
+import logger from './src/utils/logger';
+import swaggerDocs from './src/utils/swagger-docs';
+import { connect } from './src/utils/db';
 
 const server = http.createServer(App);
 

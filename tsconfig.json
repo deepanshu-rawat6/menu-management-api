@@ -2,14 +2,11 @@
   "compilerOptions": {
       "module": "NodeNext",
       "moduleResolution": "NodeNext",
-      "baseUrl": "src",
+      "baseUrl": ".",
       "outDir": "dist",
       "sourceMap": true,
       "noImplicitAny": true,
       "resolveJsonModule": true,
-      // "skipLibCheck": true
   },
-  "include": ["src/**/*",
-  "node_modules/@types"
-],
+  "include": ["src/**/*", "index.ts", "node_modules/@types"],
 }
