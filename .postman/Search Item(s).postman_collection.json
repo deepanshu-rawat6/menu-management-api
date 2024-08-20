@@ -1,0 +1,35 @@
+{
+	"info": {
+		"_postman_id": "ddcfa97f-5823-4f8e-a0e4-ab4618903a34",
+		"name": "Search Item(s)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25926038"
+	},
+	"item": [
+		{
+			"name": "Search by Name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_path}}/{{api_version}}/items/search?name=Washing",
+					"host": [
+						"{{api_path}}"
+					],
+					"path": [
+						"{{api_version}}",
+						"items",
+						"search"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Washing"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

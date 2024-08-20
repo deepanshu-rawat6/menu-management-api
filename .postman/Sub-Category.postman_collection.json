@@ -1,0 +1,158 @@
+{
+	"info": {
+		"_postman_id": "45c7209c-7456-4389-9247-9c94a322d108",
+		"name": "Sub-Category",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25926038"
+	},
+	"item": [
+		{
+			"name": "CREATE: sub-category",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Mobile Phones\",\r\n  \"image\": \"https://example.com/mobile.jpg\",\r\n  \"description\": \"Sub-category for mobile phones\",\r\n  \"tax_applicable\": true,\r\n  \"tax\": 18\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_path}}/{{api_version}}/categories/:category_id/sub-categories",
+					"host": [
+						"{{api_path}}"
+					],
+					"path": [
+						"{{api_version}}",
+						"categories",
+						":category_id",
+						"sub-categories"
+					],
+					"variable": [
+						{
+							"key": "category_id",
+							"value": "66c38bfbb853e180fdb25368"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET:  sub-category by NAME or ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_path}}/{{api_version}}/sub-categories?id=66c3964c6c2dc72f33413cb3&name=Mobile Phones",
+					"host": [
+						"{{api_path}}"
+					],
+					"path": [
+						"{{api_version}}",
+						"sub-categories"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "66c3964c6c2dc72f33413cb3"
+						},
+						{
+							"key": "name",
+							"value": "Mobile Phones"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET: ALL sub-category",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_path}}/{{api_version}}/sub-categories/all",
+					"host": [
+						"{{api_path}}"
+					],
+					"path": [
+						"{{api_version}}",
+						"sub-categories",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET: sub-category by category",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_path}}/{{api_version}}/categories/:category_id/sub-categories",
+					"host": [
+						"{{api_path}}"
+					],
+					"path": [
+						"{{api_version}}",
+						"categories",
+						":category_id",
+						"sub-categories"
+					],
+					"variable": [
+						{
+							"key": "category_id",
+							"value": "66c38bfbb853e180fdb25368"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE:  sub-category",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Electronics\",\r\n  \"image\": \"https://example.com/image.jpg\",\r\n  \"category_id\": \"12345\",\r\n  \"description\": \"Category for all electronic items\",\r\n  \"tax_applicable\": true,\r\n  \"tax\": 18\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{api_path}}/{{api_version}}/categories/:category_id/sub-categories/:id",
+					"host": [
+						"{{api_path}}"
+					],
+					"path": [
+						"{{api_version}}",
+						"categories",
+						":category_id",
+						"sub-categories",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "category_id",
+							"value": "66c38bfbb853e180fdb25368"
+						},
+						{
+							"key": "id",
+							"value": "66c3964c6c2dc72f33413cb3"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

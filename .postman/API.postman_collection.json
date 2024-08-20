@@ -1,0 +1,46 @@
+{
+	"info": {
+		"_postman_id": "b62c9693-6c81-4d9b-871f-b432e5a57f61",
+		"name": "API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25926038"
+	},
+	"item": [
+		{
+			"name": "Healthcheck",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{deployed-api}}/{{api_version}}/healthcheck",
+					"host": [
+						"{{deployed-api}}"
+					],
+					"path": [
+						"{{api_version}}",
+						"healthcheck"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Hello from API",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{deployed-api}}/{{api_version}}/hello",
+					"host": [
+						"{{deployed-api}}"
+					],
+					"path": [
+						"{{api_version}}",
+						"hello"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
