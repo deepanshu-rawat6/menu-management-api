@@ -6,7 +6,6 @@
 - [Project Setup](#project-setup)
 - [Environment Variables](#environment-variables)
 - [Architecure](#architecture)
-- [API Endpoints](#api-endpoints)
 - [Testing](#testing)
 - [Technologies Used](#technologies-used)
 - [QnAs](#qnas)
@@ -30,6 +29,8 @@ The API is designed to manage these entities efficiently, with functionalities t
 * Postman Collections: [Postman Collections](https://github.com/deepanshu-rawat6/menu-management-api/tree/master/.postman).
 
 * Loom Video: [API Overview Video](https://www.loom.com/share/92afa3b5822c45b0bb6e0bf9fc110baa?sid=99399ff8-f41d-4669-829b-cd88e080ddbf)
+
+* To know more about the endpoints: [API-Endpoints.md](https://github.com/deepanshu-rawat6/menu-management-api/blob/master/API-Endpoints.md)
 
 ## Project Setup
 
@@ -101,107 +102,6 @@ DB_PASSWORD= <DB_PASSWORD>
 ## Architecture
 
 ![Architecture](.img/arch.png)
-
-## API Endpoints
-
-Here are the key API endpoints available in this project:
-
-**Note**: For more extensive details on each route, visit the [API Documentation](https://menu-management-api-u1ds.onrender.com/api-docs/#/)
-
-### API Routes
-
-#### Healthcheck
-
-  - GET /api/v1/healthcheck
-
-#### Hello
-
-  - GET /api/v1/hello
-
-### Categories
-
-#### Create a Category
-
-  - POST /api/v1/categories
-  - Attributes: name, image, description, taxApplicability, tax, taxType
-
-#### Get All Categories
-
-  - GET /api/v1/categories
-
-#### Get a Category by ID
-
-  - GET /api/v1/categories?id=:id&name=:name
-
-#### Update a Category
-
-  - PATCH /api/v1/categories/:id
-
-
-### Subcategories
-
-#### Create a Subcategory
-
-  - POST /api/v1/categories/:category_id/sub-categories
-  - Attributes: name, image, description, taxApplicability, tax
-
-#### Get All Subcategories
-
-  - GET /api/v1/sub-categories/all
-
-#### Get Subcategories by Category
-
-  - GET /api/v1/categories/:category_id/sub-categories
-
-#### Get a Subcategory by ID
-
-  - GET /api/v1/sub-categories?id=:id&name=:name
-
-#### Update a Subcategory
-
-  - PATCH /api/v1/categories/:category_id/sub-categories/:id
-
-### Items
-
-#### Create an Item under Category
-
-  - POST /api/v1/categories/:category_id/items
-  - Attributes: name, image, description, taxApplicability, tax, baseAmount, discount, totalAmount
-
-#### Create an Item under Sub Category
-
-  - POST /api/v1/sub-categories/:sub_category_id/items
-  - Attributes: name, image, description, taxApplicability, tax, baseAmount, discount, totalAmount
-
-#### Get All Items
-
-  - GET /api/v1/items/all
-
-#### Get Items by Category
-
-  - GET /api/v1/categories/:category_id/items
-
-#### Get Items by Subcategory
-
-  - GET /api/v1/sub-categories/:sub_category_id/items
-
-#### Get an Item by ID
-
-  - GET /api/v1/items?id=:id&name=:name
-
-#### Update an Item under Category
-
-  - PUT /api/v1/categories/:category_id/items/:id
-
-#### Update an Item under Sub Category
-
-  - PUT /api/v1/sub-categories/:sub_category_id/items/:id
-
-### Search
-
-#### Search Items by Name
-
-  - GET /api/v1/items/search?name=:name
 
 ## Testing
 
