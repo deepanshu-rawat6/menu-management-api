@@ -32,6 +32,11 @@ The API is designed to manage these entities efficiently, with functionalities t
 
 * To know more about the endpoints: [API-Endpoints.md](https://github.com/deepanshu-rawat6/menu-management-api/blob/master/API-Endpoints.md)
 
+**NOTE:**
+```
+The API is deployed on Render, sometimes it takes a coldstart of 50-60 seconds, if there is inactivity of few hours. So please be patient with the deployed API.
+```
+
 ## Project Setup
 
 1. **Pre-requisites**
